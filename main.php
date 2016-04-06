@@ -131,201 +131,253 @@ $users_cars = [
 function get_country($id)
 {
     global $countries;
-    return $countries[$id - 1]['name'];
+
+    for ($i = 0; $i < count($countries); $i++) {
+        if ($countries[$i]['id'] == $id) {
+            return $countries[$i];
+        }
+    }
 }
 
-function get_country_city($city_id)
+function get_country_city($id)
 {
+
     global $cities;
-    $city = $cities[$city_id - 1]['country_id'];
-    return get_country($city);
-}
-
-function get_cities_country($country_id)
-{
     global $countries;
-    global $cities;
 
-    if ($country_id > count($countries) || $country_id <= 0) {
+    $country_id = null;
+
+    for ($i = 0; $i < count($cities); $i++) {
+        if ($cities[$i]['id'] == $id) {
+            $country_id = $cities[$i]['country_id'];
+            break;
+        }
+    }
+
+    if ($country_id == null) {
         return null;
     }
 
-    if (isset($cities[$country_id - 1]['name'])) {
-        return [$countries[$country_id - 1]['name'], $cities[$country_id - 1]['name']];
-    } else return $countries[$country_id - 1]['name'];
+    for ($i = 0; $i < count($countries); $i++) {
+        if ($countries[$i]['id'] == $country_id) {
+            return $countries[$i];
+        }
+    }
+}
 
+function get_cities_country($id)
+{
+    global $cities;
+
+    $result = [];
+
+    for ($i = 0; $i < count($cities); $i++) {
+        if ($cities[$i]['country_id'] == $id) {
+            $result = $cities[$i]['name'];
+        }
+    }
+
+    return $result;
 }
 
 function get_city($id)
 {
     global $cities;
 
-    return $cities[$id - 1]['name'];
+    for ($i = 0; $i < count($cities); $i++) {
+        if ($cities[$i]['id'] == $id) {
+            return $cities[$i];
+        }
+    }
 }
 
 function get_user($id)
 {
     global $users;
 
-    if (!isset($users[$id - 1])) {
-        return 'Пользователь по такому id не найден';
+    for ($i = 0; $i < count($users); $i++) {
+        if ($users[$i]['id'] == $id) {
+            return $users[$i];
+        }
     }
-
-    return $users[$id - 1];
+    return "Пользователь по id $id не найден";
 }
 
 function create_user_full_name($first_name, $last_name, $second_name)
 {
-    $result = $first_name . ' ' . $last_name . ' ' . $second_name;
-
-    return $result;
+    return $last_name . ' ' . $first_name . ' ' . $second_name;
 }
 
 function get_user_full_name($id)
 {
     global $users;
-    $user = $users[$id - 1]['last_name'] . ' ' . $users[$id - 1]['first_name'] . ' ' . $users[$id - 1]['second_name'];
 
-    return $user;
+    for ($i = 0; $i < count($users); $i++) {
+        if ($users[$i]['id'] == $id) {
+
+            $last_name = $users[$i]['last_name'];
+            $first_name = $users[$i]['first_name'];
+            $second_name = $users[$i]['second_name'];
+
+            return $last_name . ' ' . $first_name . ' ' . $second_name;
+        }
+    }
 }
 
 function get_car($id)
 {
     global $cars;
-    return $cars[$id - 1];
+
+    for ($i = 0; $i < count($cars); $i++) {
+        if ($cars[$i]['id'] == $id) {
+            return $cars[$i];
+        }
+    }
 }
 
 function get_users($ids)
 {
     global $users;
-    $arr = [];
-    $k = 0;
+
+    $result = [];
 
     for ($i = 0; $i < count($ids); $i++) {
-        if (isset($users[$ids[$i] - 1])) {
-            $arr[$k++] = $users[$ids[$i] - 1];
-        } else {
-            return 'Пользователя с id ' . $ids[$i] . ' не существует' . '<br>';
+        for ($j = 0; $j < count($users); $j++) {
+            if ($users[$j]['id'] == $ids[$i]) {
+                $result[] = $users[$j];
+            }
         }
     }
-
-    return $arr;
+    return $result;
 }
 
-function search_user($options)
+function change_user_password($user_id, $old_password, $new_password)
 {
     global $users;
 
-    $arr = array_keys($options);
-    $result = [];
-    $k = 0;
-
     for ($i = 0; $i < count($users); $i++) {
-        if (($users[$i][$arr[0]] == $options[$arr[0]])) {
-            similar_text($users[$i][$arr[1]], $options[$arr[1]], $tmp);
-            if ($tmp >= 60) {
-                $result[$k++] = $users[$i]['last_name'] . ' ' . $users[$i]['first_name'] . ' ' . $users[$i]['second_name'];
+        if ($users[$i]['id'] == $user_id) {
+            if ($users[$i]['password'] == $old_password) {
+                $users[$i]['password'] = $new_password;
+                return true;
             }
         }
     }
 
-    return $result;
-
-}
-
-function change_user_pasword($user_id, $old_password, $new_password)
-{
-    global $users;
-
-    if ($users[$user_id - 1]['password'] === $old_password) {
-        $users[$user_id - 1]['password'] = $new_password;
-        return true;
-    }
     return false;
 }
 
-function get_cars_user($user_id)
+function get_cars_user($id)
 {
     global $users_cars;
     global $cars;
-    $k = 0;
-    $arr = [];
+
+    $cars_id = [];
     $result = null;
 
     for ($i = 0; $i < count($users_cars); $i++) {
-        foreach ($users_cars[$i] as $key => $value) {
-            if ($key == 'user_id' && $value == $user_id) {
-                $num = $users_cars[$i]['car_id'];
-                $arr[$k++] = $cars[$num - 1]['name'];
+        if ($users_cars[$i]['user_id'] == $id) {
+            $cars_id[] = $users_cars[$i]['car_id'];
+        }
+    }
+
+
+    for ($i = 0; $i < count($cars); $i++) {
+        for ($j = 0; $j < count($cars_id); $j++) {
+            if ($cars[$i]['id'] == $cars_id[$j]) {
+                $result[] = $cars[$i];
             }
         }
     }
 
-    for ($i = 0; $i < count($arr); $i++) {
-        $result .= $arr[$i] . '  ';
-    }
-
     return $result;
-
 }
 
 function get_users_car($car_id)
 {
     global $users_cars;
     global $users;
-    $arr = [];
-    $k = 0;
 
-    for ($i = 0; $i < count($users); $i++) {
-        foreach ($users_cars[$i] as $key => $value) {
-            if ($key == 'car_id' && $value == $car_id) {
-                $num = $users_cars[$i]['user_id'];
-                $arr[$k++] = $users[$num - 1]['last_name'] . ' ' . $users[$num - 1]['first_name'] . ' '
-                    . $users[$num - 1]['second_name'];
-            }
+    $users_id = [];
+    $result = null;
+
+    for ($i = 0; $i < count($users_cars); $i++) {
+        if ($users_cars[$i]['car_id'] == $car_id) {
+            $users_id[] = $users_cars[$i]['user_id'];
         }
     }
 
-    return $arr;
+    for ($i = 0; $i < count($users); $i++) {
+        for ($j = 0; $j < count($users_id); $j++) {
+            if ($users[$i]['id'] == $users_id[$j]) {
+                $result[] = $users[$i];
+            }
+        }
+    }
+    return $result;
 }
 
-echo "get_country - " . get_country(1);
-echo '<br>';
-echo "get_country_city - " . get_country_city(2);
-$city_list = get_cities_country(1);
-echo '<br>';
-print_r($city_list);
-echo '<br>';
-echo get_city(2);
-echo '<br>';
-print_r(get_user(3));
-echo '<br>';
-echo create_user_full_name('Богдан', 'Геннадьевич', 'Носовицкий');
-echo '<br>';
-echo get_user_full_name(3);
-echo '<br>';
-print_r(get_car(1));
-echo '<br>';
-$user_list = [25000, 1, 3];
-echo '<pre>';
-print_r(get_users($user_list));
-echo '<pre>';
+function search_user($options)
+{
+    global $users;
 
-$options = [
-    'id' => '1',
-    'first_name' => "Вале"
+}
+
+
+echo "Результат функции get_country - ";
+$get_country = get_country(2);
+print_r($get_country);
+echo "<br><br>";
+echo "Результат функции get_county_city - ";
+$get_country_city = get_country_city(2);
+print_r($get_country_city);
+echo "<br><br>";
+echo "Результат функции get_cities_country - ";
+$get_cities_country = get_cities_country(3);
+print_r($get_cities_country);
+echo "<br><br>";
+echo "Результат функции get_city - ";
+$get_city = get_city(2);
+print_r($get_city);
+echo "<br><br>";
+echo "Результат функции get_user - ";
+$get_user = get_user(1);
+print_r($get_user);
+echo "<br><br>";
+echo "Результат функции create_user_full_name - ";
+echo create_user_full_name("Василий", "Пупкин", "Петрович");
+echo "<br><br>";
+echo "Результат функции get_user_full_name - ";
+echo get_user_full_name(3);
+echo "<br><br>";
+echo "Результат функции get_car - ";
+print_r(get_car(1));
+
+echo "<br><br>";
+echo "Результат функции get_users - ";
+$search_users = [2, 3];
+$get_users = get_users($search_users);
+echo "<pre>";
+print_r($get_users);
+echo "<pre>";
+echo "<br><br>";
+echo "Результат функции change_user_password - ";
+if (change_user_password(3, '9Wd803d', '123123')) {
+    echo 'true';
+} else {
+    echo 'Текущий пароль введен не верно!';
+}
+echo "<br><br>";
+echo "Результат функции get_cars_user - ";
+print_r(get_cars_user(3));
+echo "<br><br>";
+echo "Результат функции get_users_car - ";
+print_r(get_users_car(1));
+
+
+$keys = [
+    'id' => 1,
+    'first_name' => 'Вален'
 ];
 
-print_r(search_user($options));
-if (change_user_pasword(1, '78vrE0871', '333')) {
-    echo 'Пароль успешно изменен';
-} else {
-    echo 'Неверный пароль пользователя';
-}
-
-
-echo "<br>";
-echo get_cars_user(3);
-echo "<br>";
-echo "<br>";
-print_r(get_users_car(1));
+print_r(search_user($keys));
