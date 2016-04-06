@@ -66,12 +66,11 @@ echo "\n";
 $arr = array('green' => 'зеленый', 'red' => 'красный', 'blue' => 'голубой');
 $en = [];
 $ru = [];
-$i = 0;
+
 
 foreach ($arr as $key => $value) {
-    $en[$i] = $key;
-    $ru[$i] = $value;
-    $i++;
+    $en[] = $key;
+    $ru[] = $value;
 }
 
 print_r($ru);
@@ -146,22 +145,12 @@ echo "\n\n";
 
 $arr = [4, 2, 5, 19, 13, 0, 10];
 $e = [2, 3, 4];
-$flag = false;
 
-foreach ($arr as $value) {
-    for ($i = 0; $i < count($e); $i++) {
-        if ($value == $e[$i]) {
-            $flag = true;
-            break;
-        }
-    }
-    if ($flag) {
-        echo 'Есть';
-        break;
-    }
+if(in_array($arr, $e)) {
+    echo 'Есть';
+} else {
+    echo 'Нет';
 }
-
-if (!$flag) echo 'Нет';
 
 // № 15
 echo "\n\n";
@@ -237,7 +226,7 @@ foreach ($days as $value) {
 echo "\n\n";
 
 for ($i = 20; $i >= 0; $i--) {
-    for ($j = $i; $j < 20; $j++) {
+    for ($j = $i; $j <= 20; $j++) {
         echo 'x';
     }
     echo "\n";
@@ -289,22 +278,20 @@ for ($i = 1; $i < 10; $i++) {
     if ($arr[$i] < $min) {
         $min = $arr[$i];
         $pos_min = $i;
-    }
-}
-
-for ($i = 1; $i < 10; $i++) {
-    if ($arr[$i] > $max) {
+    } elseif ($arr[$i] > $max) {
         $max = $arr[$i];
         $pos_max = $i;
     }
 }
 
-echo $pos_min;
+//list($arr[$pos_min], $arr[$pos_max]) = array($arr[$pos_max], $arr[$pos_min]);
 
-$temp = $arr[$pos_min];
-$arr[$pos_min] = $arr[$pos_max];
-$arr[$pos_max] = $temp;
+$arr[$pos_min] ^= $arr[$pos_max];
+$arr[$pos_max] ^= $arr[$pos_min];
+$arr[$pos_min] ^= $arr[$pos_max];
 print_r($arr);
+
+
 
 
 // № 26
@@ -322,7 +309,7 @@ for($i = 0; $i < 10; $i++) {
     if(($arr[$i] > 0) && ($i % 2 == 0 )) {
         $multiply*=$arr[$i];
     }
-    if(($arr[$i] > 0) && ($i % 2 != 0 )) {
+    else {
         echo $arr[$i].' ';
     }
 }
