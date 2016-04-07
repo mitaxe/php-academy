@@ -145,11 +145,19 @@ echo "\n\n";
 
 $arr = [4, 2, 5, 19, 13, 0, 10];
 $e = [2, 3, 4];
+$in_array = false;
 
-if(in_array($arr, $e)) {
-    echo 'Есть';
+for($i = 0; $i < sizeof($e); $i++) {
+    if(in_array($e[$i], $arr)) {
+        $in_array = true;
+        break;
+    }
+}
+
+if($in_array) {
+    echo 'Есть!';
 } else {
-    echo 'Нет';
+    echo 'Нет!';
 }
 
 // № 15
@@ -309,8 +317,9 @@ for($i = 0; $i < 10; $i++) {
     if(($arr[$i] > 0) && ($i % 2 == 0 )) {
         $multiply*=$arr[$i];
     }
-    else {
+    elseif($arr[$i] > 0) {
         echo $arr[$i].' ';
     }
+
 }
 

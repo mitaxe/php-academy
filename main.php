@@ -173,7 +173,7 @@ function get_cities_country($id)
 
     for ($i = 0; $i < count($cities); $i++) {
         if ($cities[$i]['country_id'] == $id) {
-            $result = $cities[$i]['name'];
+            $result = $cities[$i];
         }
     }
 
@@ -215,11 +215,12 @@ function get_user_full_name($id)
     for ($i = 0; $i < count($users); $i++) {
         if ($users[$i]['id'] == $id) {
 
+
             $last_name = $users[$i]['last_name'];
             $first_name = $users[$i]['first_name'];
             $second_name = $users[$i]['second_name'];
 
-            return $last_name . ' ' . $first_name . ' ' . $second_name;
+           return  create_user_full_name($first_name, $last_name, $second_name);
         }
     }
 }
