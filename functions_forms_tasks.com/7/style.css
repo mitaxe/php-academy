@@ -1,0 +1,37 @@
+textarea {
+    display: block;
+    margin: auto;
+}
+
+.btn {
+    display: block;
+    margin: auto;
+    margin-top: 20px;
+}
+
+.comments {
+    padding: 10px;
+}
+
+.comments__item {
+    border: 1px solid #00BFFF;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 5px;
+    box-shadow: 0 0 3px rgba(0,191,255,0.5);
+    font-family: 'Roboto';
+    position: relative;
+}
+
+.comments__delete {
+    background-image: url('close.png');
+    background-size: 15px 15px;
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    content:"";
+    position: absolute;
+    top: 3px;
+    right: 5px;
+    cursor: pointer;
+}
