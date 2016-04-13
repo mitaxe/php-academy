@@ -20,12 +20,12 @@ function delete_words($count)
         $result = [];
 
         for($i = 0; $i < count($file_words); $i++) {
-            if(strlen($file_words[$i]) <= $count)
+            if(mb_strlen($file_words[$i]) <= $count)
                 $result[] = $file_words[$i];
             }
         }
 
-       file_put_contents(FILE_NAME, implode(" ", $result));
+        file_put_contents(FILE_NAME, implode(" ", $result));
 
         return true;
 }

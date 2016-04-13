@@ -6,11 +6,11 @@ $comments_arr = get_comments();
 
 
 if (isset($_POST['send'])) {
-    $comment = trim($_POST['comment']);
+    $comment = trim(strip_tags($_POST['comment'], '<b>'));
+    $comment = filter($comment);
     if(!empty($comment)) {
         save_comment($comment);
         $comments_arr = get_comments();
-      //  print_r($comments_arr);
     } else {
         throw new Error(
             "Что-то пошло не так"
@@ -45,5 +45,22 @@ function get_comments()
     return $arr;
 
 }
+
+function filter($comment) {
+    $bad_words = [
+        "плохое_слово1",
+        "плохое_слово2",
+        "плохое_слово3",
+        "плохое_слово4",
+        // ...
+    ];
+
+    $change = ['***'];
+
+    return str_replace($bad_words, $change[0], $comment);
+
+
+}
+
 
 include "main.html";
