@@ -29,13 +29,12 @@ function getCommonWords($a, $b)
 
     for ($i = 0; $i < count($pieces_a); $i++) {
         for ($j = 0; $j < count($pieces_b); $j++) {
-            if ($pieces_a[$i] == $pieces_b[$j]) {
+            if ($pieces_a[$i] == $pieces_b[$j] && !in_array($pieces_a[$i], $arr)) {
                 $arr[] = $pieces_a[$i];
             }
         }
     }
 
-    $result = array_unique($arr);
+    return $arr;
 
-    return $result;
 }

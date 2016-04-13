@@ -34,9 +34,7 @@ function get_comments()
     $f = fopen(FILE_COMMENTS, "r");
     $arr = [];
     if ($f) {
-        while(!feof($f)) {
-            $arr[] = fgets($f);
-        }
+        while($arr[] = fgets($f));
     }
 
     $arr = array_diff($arr, array(''));

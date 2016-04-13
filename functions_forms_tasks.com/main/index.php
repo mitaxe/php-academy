@@ -17,9 +17,14 @@ if (isset($_POST['send'])) {
         );
     }
 
-    $is_type = is_correct_type($name);
+    $is_type = is_correct_type($tmp_name);
     $new_image_name = generate_image_name($tmp_name);
-    $is_size = is_correct_size($size);
+
+    if($size <= MAX_SIZE) {
+        $is_size = true;
+    } else {
+        $is_size = false;
+    }
 
     if (!$is_type || !$is_size) {
         throw new Error(
@@ -37,18 +42,19 @@ if (isset($_POST['send'])) {
 
 function is_correct_type($name)
 {
-    $filetype = substr($name, strlen($name) - 3);
-    $filetype = mb_strtolower($filetype);
+    $correct_types = [
+        'image/jpeg',
+        'image/png',
+        'image/gif'
+    ];
 
-    $correct_types = ['jpg', 'jpeg', 'png', 'gif'];
+    $filetype = mime_content_type($name);
 
-    foreach ($correct_types as $val) {
-        if ($filetype == $val) {
-            return true;
-        }
+    if(in_array($filetype, $correct_types)) {
+        return true;
+    } else {
+        return false;
     }
-
-    return false;
 }
 
 function generate_image_name($image_path)
@@ -63,11 +69,6 @@ function generate_image_name($image_path)
     $content_type = mime_content_type($image_path);
 
     return md5($image_path . time()) . '.' . $types[$content_type];
-}
-
-function is_correct_size($size)
-{
-    return $size <= MAX_SIZE;
 }
 
 function file_to_dir($name, $tmp, $file)

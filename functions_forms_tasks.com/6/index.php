@@ -13,18 +13,13 @@ if (isset($_POST['send'])) {
         );
     }
 
-    $filetype = substr($upload_file, strlen($upload_file) - 3);
-
-    if ($filetype != "jpg" &&
-        $filetype != "jpeg" &&
-        $filetype != "gif" &&
-        $filetype != "bmp" &&
-        $filetype != "png"
-    ) {
+    if(!is_type_correct($tmp_name)) {
         throw new Error(
-            "Неверный формат файла"
+            "Файл имеет неверный формат"
         );
     }
+
+
 
     if ($_FILES['files']['size'] == 0
         || $_FILES['files']['size'] > MAX_FILE_SIZE
@@ -46,11 +41,7 @@ function file_to_dir($tmp, $file)
         mkdir(DIR);
     }
 
-    if (move_uploaded_file($tmp, DIR . '/' . $file)) {
-        return true;
-    } else {
-        return false;
-    }
+    return move_uploaded_file($tmp, DIR . '/' . $file);
 }
 
 function display_gallery()
@@ -66,5 +57,25 @@ function display_gallery()
     }
     echo '<tr>';
     echo '</table>';
+
+}
+
+
+function is_type_correct($file)
+{
+    $correct_types = [
+      'image/jpeg',
+      'image/png',
+      'image/gif'
+    ];
+
+    $filetype = mime_content_type($file);
+
+    if(in_array($filetype, $correct_types)) {
+        return true;
+    } else {
+        return false;
+    }
+
 
 }

@@ -5,13 +5,24 @@ print_r($files);
 
 function dir_files($dir_name)
 {
-    if (file_exists($dir_name)) {
-        $scanned_directory = array_diff(scandir($dir_name), array('..', '.'));
+    if (is_dir($dir_name)) {
+
+        if ($handle = opendir($dir_name)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file != "." && $file != "..") {
+                    $scanned_directory[] = $file;
+                }
+            }
+            closedir($handle);
+        }
+
         $scanned_directory = array_values($scanned_directory);
 
-        foreach($scanned_directory as $key => $val) {
 
-            if(is_dir($dir_name.'/'.$val)) {
+
+        foreach ($scanned_directory as $key => $val) {
+
+            if (is_dir($dir_name . '/' . $val)) {
                 unset($scanned_directory[$key]);
             }
         }

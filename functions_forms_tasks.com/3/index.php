@@ -17,10 +17,12 @@ function delete_words($count)
         $file = file_get_contents(FILE_NAME);
 
         $file_words = explode(" ", $file);
+
+        print_r($file_words);
         $result = [];
 
         for($i = 0; $i < count($file_words); $i++) {
-            if(mb_strlen($file_words[$i]) <= $count)
+            if(mb_strlen($file_words[$i]) < $count)
                 $result[] = $file_words[$i];
             }
         }
