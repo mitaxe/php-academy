@@ -17,20 +17,13 @@ if (isset($_POST['send'])) {
         );
     }
 
-    $is_type = is_correct_type($tmp_name);
-    $new_image_name = generate_image_name($tmp_name);
-
-    if($size <= MAX_SIZE) {
-        $is_size = true;
-    } else {
-        $is_size = false;
-    }
-
-    if (!$is_type || !$is_size) {
+    if ($size > MAX_SIZE || !is_correct_type($tmp_name)) {
         throw new Error(
             "Неверный тип файла или размер файла превышает допустимый (3 MB)"
         );
     }
+
+    $new_image_name = generate_image_name($tmp_name);
 
     if (!file_to_dir($name, $tmp_name, $new_image_name)) {
         throw new Error(

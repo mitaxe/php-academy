@@ -16,9 +16,6 @@ function dir_files($dir_name)
             closedir($handle);
         }
 
-        $scanned_directory = array_values($scanned_directory);
-
-
 
         foreach ($scanned_directory as $key => $val) {
 

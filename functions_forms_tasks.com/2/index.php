@@ -19,21 +19,13 @@ if (isset($_POST['send'])) {
 function longest_words(string $a, int $limit)
 {
     $pieces_a = explode(" ", $a);
-    $res = [];
-    $count = 0;
-
-    if(count($pieces_a) < $limit) {
-        $limit = count($pieces_a);
-    }
 
     usort($pieces_a, function ($a, $b) {
         return mb_strlen($b) - mb_strlen($a);
     });
 
-    while ($limit > 0 ) {
-        $res[] = $pieces_a[$count++];
-        $limit--;
-    }
-    return $res;
+    $pieces_a = array_slice($pieces_a, 0, $limit);
+
+    return $pieces_a;
 }
 

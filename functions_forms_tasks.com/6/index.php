@@ -71,11 +71,6 @@ function is_type_correct($file)
 
     $filetype = mime_content_type($file);
 
-    if(in_array($filetype, $correct_types)) {
-        return true;
-    } else {
-        return false;
-    }
-
+    return in_array($filetype, $correct_types);
 
 }
