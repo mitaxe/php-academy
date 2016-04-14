@@ -43,11 +43,7 @@ function is_correct_type($name)
 
     $filetype = mime_content_type($name);
 
-    if(in_array($filetype, $correct_types)) {
-        return true;
-    } else {
-        return false;
-    }
+    return in_array($filetype, $correct_types);
 }
 
 function generate_image_name($image_path)
