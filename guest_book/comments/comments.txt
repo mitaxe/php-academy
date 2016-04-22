@@ -1,0 +1,3 @@
+a:5:{s:4:"name";s:12:"Богдан";s:5:"email";s:21:"mitaxe-free@yandex.ru";s:7:"subject";s:34:"Моя гостевая книга";s:7:"comment";s:25:"Сделано 22.04.2016";s:4:"time";s:37:"Friday 22nd of April 2016 08:56:40 PM";}
+a:5:{s:4:"name";s:8:"Женя";s:5:"email";s:19:"tao201980@gmail.com";s:7:"subject";s:8:"Тест";s:7:"comment";s:40:"Тестовый комментарий.";s:4:"time";s:37:"Friday 22nd of April 2016 08:57:03 PM";}
+a:5:{s:4:"name";s:8:"Ваня";s:5:"email";s:21:"mitaxe-free@yandex.ru";s:7:"subject";s:10:"Тест 2";s:7:"comment";s:38:"Еще один комментарий";s:4:"time";s:37:"Friday 22nd of April 2016 08:57:34 PM";}
